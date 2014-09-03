@@ -47,12 +47,10 @@ public class FIFOAlgoImpl<T> implements IAlgo<T> {
 	public void remove(T t) {
 		if (!fifoQ.isEmpty())
 		fifoQ.remove(t);
-		// TODO Auto-generated method stub		
 	}
 	public void remove() {
 		if (!fifoQ.isEmpty())
 		fifoQ.remove();
-		// TODO Auto-generated method stub		
 	}
 
 	public void print()
