@@ -23,7 +23,7 @@ public class Page <T> {
 		return content.hashCode();}
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Page))
+		if (!(obj instanceof Page<?>))
             return false;
         if (((Page<?>)obj).getPageId() == this.pageId)
             return true;
