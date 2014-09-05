@@ -1,10 +1,7 @@
 package testers;
 
-import java.awt.List;
 import java.util.LinkedList;
 
-import memory.Page;
-import memory.RAM;
 import algorithms.FIFOAlgoImpl;
 import algorithms.LRUAlgoImpl;
 //import algorithms.MFUAlgoImpl;
