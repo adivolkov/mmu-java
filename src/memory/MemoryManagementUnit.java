@@ -21,7 +21,7 @@ public class MemoryManagementUnit {
 		for(int i=0;i<pageIds.length;i++){
 			if (ram.getPage(pageIds[i]) == null){
 				if (!ram.isFull()){
-					//TODO: PageFault
+						
 				}
 				else {
 					//TODO: Do logic of full RAM (pageReplacement)

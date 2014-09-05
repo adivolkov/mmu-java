@@ -1,13 +1,13 @@
 package memory;
 
-import util.HardDiskException;
+import java.io.IOException;
 
 public class HardDisk {
 	final static String DEFAULT_FILE_NAME = "hdPages.txt";
 	final static int _SIZE = 1000;
 	private static HardDisk hardDisk = new HardDisk();
 	
-	public static HardDisk getInstance() throws HardDiskException {
+	public static HardDisk getInstance() {
 		if (hardDisk == null){
 			hardDisk = new HardDisk();
 		}
@@ -17,23 +17,12 @@ public class HardDisk {
 	private HardDisk(){		
 	}
 	
-	/* <Getters> */
-	public static String getFileName(){
-		return DEFAULT_FILE_NAME;
-	}
-	
-	public static int getSize(){
-		return _SIZE;
-	}
-	/* </Getters>*/
-	
-	public Page<byte[]> pageFault(int pageId){		
+	public Page<byte[]> pageFault(int pageId) throws IOException, ClassNotFoundException{		
 		
 		return null;
 	}
 	
-	public Page<byte[]> pageReplacement(Page<byte[]> moveToHdPage, Integer moveToRamId)
-	{
+	public Page<byte[]> pageReplacement(Page<byte[]> moveToHdPage, Integer moveToRamId) throws IOException, ClassNotFoundException{
 		return moveToHdPage;
 	}
 
