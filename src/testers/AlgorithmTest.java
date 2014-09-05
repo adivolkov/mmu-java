@@ -34,25 +34,25 @@ public class AlgorithmTest {
 		fifoAlgo.add("test3");
 		fifoAlgo.print();
 		
-		LRUAlgoImpl<String> la = new LRUAlgoImpl<String>(4);
+		LRUAlgoImpl<String> lruAlgo = new LRUAlgoImpl<String>(4);
 		
-		la.add("one");
-		la.add("two");
-		la.add("three");
-		la.add("four");
+		lruAlgo.add("one");
+		lruAlgo.add("two");
+		lruAlgo.add("three");
+		lruAlgo.add("four");
 		
 		System.out.println("---LRU---");
-		la.get("three");
-		la.print();
+		lruAlgo.get("three");
+		lruAlgo.print();
 		System.out.println("---------");
-		la.add("five");
-		la.print();
+		lruAlgo.add("five");
+		lruAlgo.print();
 		System.out.println("---------");
-		la.get("two");
-		la.print();
+		lruAlgo.get("two");
+		lruAlgo.print();
 		System.out.println("---------");
-		la.remove("three");
-		la.print();
+		lruAlgo.remove("three");
+		lruAlgo.print();
 		System.out.println("---------");
 	}
 }

@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import memory.HardDisk;
 import memory.Page;
 
 public class HardDiskInputStream extends ObjectInputStream {
@@ -21,13 +20,13 @@ public class HardDiskInputStream extends ObjectInputStream {
 		
 		return null;
 	}
-	public Page<byte[]> readSinglePage(Integer pageId) throws HardDiskException, IOException, ClassNotFoundException{
+	public Page<byte[]> readSinglePage(Integer pageId) throws IOException, ClassNotFoundException{
 		//HardDisk hardDisk = HardDisk.getInstance();
 		FileInputStream hardDiskFIS = new FileInputStream(this.inputFileName);
 		ObjectInputStream hardDiskOIS = new ObjectInputStream(hardDiskFIS);
+		@SuppressWarnings("unchecked")
 		Map<Integer, Page<byte[]>> hardDiskHashMap = (HashMap<Integer, Page<byte[]>>) hardDiskOIS.readObject();
 		hardDiskOIS.close();
 		return hardDiskHashMap.get(pageId);
 	}
-
 }
