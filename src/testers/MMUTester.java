@@ -1,5 +1,8 @@
 package testers;
 
+import algorithms.IAlgo;
+// import memory.MemoryManagementUnit;
+
 public class MMUTester {
 
 	public static void main(String[] args) {
