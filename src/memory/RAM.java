@@ -11,7 +11,8 @@ public class RAM {
 		this.pages = new HashMap<Integer, Page<byte[]>>(initialCapacity);
 	}
 	public Page<byte[]> getPage(int pageId) {
-		return pages.get(pageId);}
+		return pages.get(pageId);
+	}
 	public void addPage(Page<byte[]> addPage) {
 		pages.put(addPage.getPageId(), addPage);
 	}

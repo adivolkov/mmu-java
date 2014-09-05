@@ -1,5 +1,7 @@
 package memory;
 
+import java.util.ArrayList;
+
 import algorithms.IAlgo;
 
 public class MemoryManagementUnit {
@@ -12,11 +14,24 @@ public class MemoryManagementUnit {
 	}
 	
 	public Page<byte[]>[] getPages(Integer[] pageIds){
-		// TODO: implement
+		
+		@SuppressWarnings("unchecked")
+		Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
+		
 		for(int i=0;i<pageIds.length;i++){
 			if (ram.getPage(pageIds[i]) == null){
-				if (ram.)
+				if (!ram.isFull()){
+					//TODO: PageFault
+				}
+				else {
+					//TODO: Do logic of full RAM (pageReplacement)
+				}
+			}
+			else {
+				//result[i] = algo.get(pageIds[i]));
 			}
 		}
+		
+		return null;
 	}
 }

@@ -1,15 +1,16 @@
 package algorithms;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class FIFOAlgoImpl<T> implements IAlgo<T> {
 
-	private Queue<T> fifoQ;
+	private Queue<T> queue;
 	private int capacity;
 	
-	public FIFOAlgoImpl(Queue<T> queue, int initCapacity) {
-		fifoQ = queue;
-		capacity = initCapacity;
+	public FIFOAlgoImpl(int capacity) {
+		queue = new LinkedList<T>();
+		this.capacity = capacity;
 	}
 	
 	/**********finds the object t in the queue 
@@ -17,46 +18,34 @@ public class FIFOAlgoImpl<T> implements IAlgo<T> {
 	
 	@Override
 	public T get(T t) {
-				
-		if (fifoQ.isEmpty())
+		if (queue.contains(t))
 		{
-			System.out.println("FIFO " + t.getClass() + ".get(" + t.toString() +")");
-			return null;
-		}			
-		
-		if (fifoQ.contains(t))
-		{
-			System.out.println("FIFO " + t.getClass() + ".get(" + t.toString() +")");
 			return t;
 		}
-		System.out.println("Object was not found");
 		return null;
 	}
 
 	@Override
 	public T add(T t) {
-		if (fifoQ.size() == capacity)
+		T removed = null;
+		if (queue.size() >= capacity)
 		{
-			fifoQ.remove();
+			removed = queue.remove();
 		}
-		fifoQ.add(t);
-		return t;
+		queue.add(t);
+		return removed;
 	}
 
 	@Override
 	public void remove(T t) {
-		if (!fifoQ.isEmpty())
-		fifoQ.remove(t);
-	}
-	public void remove() {
-		if (!fifoQ.isEmpty())
-		fifoQ.remove();
+		if (!queue.isEmpty())
+			queue.remove(t);
 	}
 
 	public void print()
 	 {
-		Object[] array = new Object[fifoQ.size()] ;
-		array = fifoQ.toArray();
+		Object[] array = new Object[queue.size()] ;
+		array = queue.toArray();
 		for(int i=0;i<array.length;i++)
 		{
 			System.out.println(array[i]);

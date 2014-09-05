@@ -6,57 +6,48 @@ public class LRUAlgoImpl<T> implements IAlgo<T> {
 	private LinkedList<T> lruList;
 	private int capacity;
 	
-	public LRUAlgoImpl(LinkedList<T> list, int initCapacity)
+	public LRUAlgoImpl(int capacity)
 	{
-		lruList = list;
-		capacity = initCapacity;
+		lruList = new LinkedList<T>();
+		this.capacity = capacity;
 	}
 	
 	@Override
 	public T get(T t) {
-		int index=0;
-		if (lruList.isEmpty()==true)
-			return null;
-		if	(lruList.contains(t)==true)
+		if	(lruList.contains(t))
 		{
-			index =lruList.indexOf(t);
+			int index = lruList.indexOf(t);
 			lruList.remove(index);
 			lruList.addFirst(t);
 			return t;
 		}
-	return null;
+		return null;
 	}
 
 	@Override
 	public T add(T t) {
-		int index=0;
-		if (lruList.isEmpty()== true)
+		T removed = null;
+		if	(lruList.contains(t))
 		{
-			lruList.addFirst(t);
-			return t;
-		}
-		if	(lruList.contains(t)==true)
-		{
-			index=lruList.indexOf(t);
+			int index=lruList.indexOf(t);
 			lruList.remove(index);
 			lruList.addFirst(t);
-			return t;
+			return removed;
 		}
 		if (lruList.size()==capacity)
 		{
-			lruList.removeLast();
+			removed = lruList.removeLast();
 			lruList.addFirst(t);
-			return t;
+			return removed;
 		}
 		lruList.addFirst(t);
-		return t;
+		return removed;
 	}
 
 	@Override
 	public void remove(T t) {
 		if (lruList.contains(t))
 			lruList.remove(t);
-		else System.out.println("no such T");
 	}
 
 	 public void print()
