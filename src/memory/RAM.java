@@ -5,7 +5,9 @@ import java.util.Map;
 
 public class RAM {
 	private Map<Integer, Page<byte[]>> pages;
+	private int capacity;
 	public RAM(int initialCapacity) {
+		this.setCapacity(initialCapacity);
 		this.pages = new HashMap<Integer, Page<byte[]>>(initialCapacity);
 	}
 	public Page<byte[]> getPage(int pageId) {
@@ -18,12 +20,12 @@ public class RAM {
 	}
 	public Page<byte[]>[] getPages(Integer[] pageIds) {
 		@SuppressWarnings("unchecked")
-		Page<byte[]>[] pc = (Page<byte[]>[]) new Page[pageIds.length];
+		Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
 		for (int i=0; i<pageIds.length; i++)
 		{
-			pc[i] = getPage(pageIds[i]);
+			result[i] = getPage(pageIds[i]);
 		}		
-		return pc;}		
+		return result;}		
 	public void addPages(Page<byte[]>[] addPages) {
 		for (int i=0; i<addPages.length; i++)
 		{
@@ -36,6 +38,14 @@ public class RAM {
 			removePage(removePages[i]);
 		}
 	}
+	public int getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}	
 	
-	
+	public boolean isFull() {
+		return pages.size() >= capacity;
+	}
 }
