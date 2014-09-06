@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import util.HardDiskInputStream;
 import util.HardDiskOutputStream;
+import util.MMULogger;
 
 public class HardDisk {
 	final static String DEFAULT_FILE_NAME = "hdPages.txt";
@@ -28,6 +30,7 @@ public class HardDisk {
 			hdis.close();
 		} catch (Exception ex) {
 			// there is no such file actually, so we just move on with an empty HashMap
+			MMULogger.getInstance().write("There is no valid HardDisk pages file to read from. (it's ok)", Level.SEVERE);
 			initializeHardDiskMap();
 		}
 	}

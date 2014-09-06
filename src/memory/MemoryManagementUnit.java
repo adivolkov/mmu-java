@@ -1,11 +1,15 @@
 package memory;
 
+import java.util.logging.Level;
+
+import util.MMULogger;
 import algorithms.IAlgo;
 
 public class MemoryManagementUnit {
 	private IAlgo<Integer> algo;
 	private RAM ram;
 	private HardDisk hd;
+	MMULogger logger = MMULogger.getInstance();
 	
 	public MemoryManagementUnit(int ramCapacity, IAlgo<Integer> algo) {
 		this.ram = new RAM(ramCapacity);
@@ -26,6 +30,7 @@ public class MemoryManagementUnit {
 					algo.add(pageIds[i]);
 					// adding the missing page to the ram
 					result[i] = hd.pageFault(pageIds[i]);
+					logger.write("PF " + pageIds[i], Level.INFO);
 					ram.addPage(result[i]);
 				}
 				else {
@@ -36,6 +41,8 @@ public class MemoryManagementUnit {
 					Page<byte[]> pageToHd = ram.getPage(pageIdToHd);
 					ram.removePage(pageToHd);
 					result[i] = hd.pageReplacement(pageToHd, pageIds[i]);
+					logger.write("PR MTH " + pageIdToHd + " MTR " + pageIds[i], Level.INFO);
+					
 					ram.addPage(result[i]);
 				}
 			}
