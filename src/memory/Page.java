@@ -1,6 +1,9 @@
 package memory;
 
-public class Page <T> {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Page <T> implements Serializable{
 	private int pageId;
 	private T content;
 	
@@ -18,7 +21,7 @@ public class Page <T> {
 	public void setContent(T content) {
 		this.content = content;
 	}
-	@Override
+	/*@Override
 	public int hashCode() {
 		return content.hashCode();}
 	@Override
@@ -30,5 +33,6 @@ public class Page <T> {
 		return false;}
 	@Override
 	public String toString() {
-		return content.toString();}
+		return pageId + ": " + content.toString();
+	}*/
 }

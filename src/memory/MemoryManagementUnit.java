@@ -16,7 +16,8 @@ public class MemoryManagementUnit {
 	public Page<byte[]>[] getPages(Integer[] pageIds){
 		
 		@SuppressWarnings("unchecked")
-		Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
+		Page<byte[]>[] result = new Page[pageIds.length];
+		//Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
 		
 		for(int i=0;i<pageIds.length;i++){
 			if (ram.getPage(pageIds[i]) == null){

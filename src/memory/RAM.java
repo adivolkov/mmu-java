@@ -1,5 +1,6 @@
 package memory;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,8 @@ public class RAM {
 	}
 	public Page<byte[]>[] getPages(Integer[] pageIds) {
 		@SuppressWarnings("unchecked")
-		Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
+		Page<byte[]>[] result = new Page[pageIds.length];
+		//Page<byte[]>[] result = (Page<byte[]>[])new Object[pageIds.length];
 		for (int i=0; i<pageIds.length; i++)
 		{
 			result[i] = getPage(pageIds[i]);
