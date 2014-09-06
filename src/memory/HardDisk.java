@@ -28,6 +28,13 @@ public class HardDisk {
 			hdis.close();
 		} catch (Exception ex) {
 			// there is no such file actually, so we just move on with an empty HashMap
+			initializeHardDiskMap();
+		}
+	}
+	
+	private void initializeHardDiskMap() {
+		for (int i = 0; i < SIZE; i++) {
+			hdmap.put(i, new Page<byte[]>(i,new byte[0]));
 		}
 	}
 
@@ -41,6 +48,7 @@ public class HardDisk {
 		return hdmap.remove(moveToRamId);
 	}
 	
+	// a method to send mock data from the MMUTester to the HD
 	public void SeedDataToFile(Map<Integer, Page<byte[]>> data) throws ClassNotFoundException, IOException{
 		hdmap = data;
 		FileOutputStream fos = new FileOutputStream(DEFAULT_FILE_NAME);

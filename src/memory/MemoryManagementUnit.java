@@ -13,7 +13,7 @@ public class MemoryManagementUnit {
 		this.hd = HardDisk.getInstance();
 	}
 	
-	public Page<byte[]>[] getPages(Integer[] pageIds){
+	public synchronized Page<byte[]>[] getPages(Integer[] pageIds){
 		
 		@SuppressWarnings("unchecked")
 		Page<byte[]>[] result = new Page[pageIds.length];

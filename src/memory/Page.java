@@ -21,18 +21,5 @@ public class Page <T> implements Serializable{
 	public void setContent(T content) {
 		this.content = content;
 	}
-	/*@Override
-	public int hashCode() {
-		return content.hashCode();}
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Page<?>))
-            return false;
-        if (((Page<?>)obj).getPageId() == this.pageId)
-            return true;
-		return false;}
-	@Override
-	public String toString() {
-		return pageId + ": " + content.toString();
-	}*/
+
 }
