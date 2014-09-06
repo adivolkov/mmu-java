@@ -17,13 +17,11 @@ public class HardDiskInputStream extends ObjectInputStream {
 	public Map<Integer, Page<byte[]>> readAllPages() throws ClassNotFoundException, IOException{
 		@SuppressWarnings("unchecked")
 		Map<Integer, Page<byte[]>> hardDiskHashMap = (HashMap<Integer, Page<byte[]>>) this.readObject();
-		this.close();
 		return hardDiskHashMap;
 	}
 	public Page<byte[]> readSinglePage(Integer pageId) throws IOException, ClassNotFoundException{
 		@SuppressWarnings("unchecked")
 		Map<Integer, Page<byte[]>> hardDiskHashMap = (HashMap<Integer, Page<byte[]>>) this.readObject();
-		this.close();
 		return hardDiskHashMap.get(pageId);
 	}
 }

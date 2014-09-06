@@ -1,16 +1,16 @@
 package memory;
 
-import java.util.ArrayList;
-
 import algorithms.IAlgo;
 
 public class MemoryManagementUnit {
 	private IAlgo<Integer> algo;
 	private RAM ram;
+	private HardDisk hd;
 	
 	public MemoryManagementUnit(int ramCapacity, IAlgo<Integer> algo) {
-		ram = new RAM(ramCapacity);
+		this.ram = new RAM(ramCapacity);
 		this.algo = algo;
+		this.hd = HardDisk.getInstance();
 	}
 	
 	public Page<byte[]>[] getPages(Integer[] pageIds){
@@ -21,17 +21,27 @@ public class MemoryManagementUnit {
 		for(int i=0;i<pageIds.length;i++){
 			if (ram.getPage(pageIds[i]) == null){
 				if (!ram.isFull()){
-						
+					// adding the missing pageId to the ram algo
+					algo.add(pageIds[i]);
+					// adding the missing page to the ram
+					result[i] = hd.pageFault(pageIds[i]);
+					ram.addPage(result[i]);
 				}
 				else {
-					//TODO: Do logic of full RAM (pageReplacement)
+					// adding the missing pageId to the ram algo
+					// saving the id of the removed page to save on the HD
+					Integer pageIdToHd = algo.add(pageIds[i]);
+					// getting the page
+					Page<byte[]> pageToHd = ram.getPage(pageIdToHd);
+					ram.removePage(pageToHd);
+					result[i] = hd.pageReplacement(pageToHd, pageIds[i]);
+					ram.addPage(result[i]);
 				}
 			}
 			else {
-				//result[i] = algo.get(pageIds[i]));
+				result[i] = ram.getPage(algo.get(pageIds[i]));
 			}
 		}
-		
-		return null;
+		return result;
 	}
 }
