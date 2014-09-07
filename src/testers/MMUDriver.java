@@ -34,7 +34,6 @@ public class MMUDriver {
 		logger.write("PN " + processesCycles.size() + "\r\n", Level.INFO);
 		List<Process> processes = createProcesses(processesCycles, mmu);
 		runProcesses(processes);
-
 	}
 	
 	public static RunConfiguration readConfigurationFile() {
@@ -60,7 +59,6 @@ public class MMUDriver {
 	public static void runProcesses(List<Process> processes){
 		for(Process p : processes){
 			new Thread(p).start();
-			//p.run();
 		}
 	}
 

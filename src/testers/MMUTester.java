@@ -37,7 +37,7 @@ public class MMUTester {
 		
 		try {
 			// we want to seed the data if hdPages.txt doesn't exist or empty
-			//hd.SeedDataToFile(data);
+			//hd.seedDataToFile(data);
 		} catch (Exception e) {
 			System.out.println("Seeding data failed: " + e.getMessage());
 		}
