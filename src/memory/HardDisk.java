@@ -5,11 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import util.HardDiskInputStream;
 import util.HardDiskOutputStream;
-import util.MMULogger;
 
 public class HardDisk {
 	final static String DEFAULT_FILE_NAME = "hdPages.txt";

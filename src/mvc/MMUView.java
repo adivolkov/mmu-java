@@ -78,6 +78,7 @@ public class MMUView {
 			tblRam.setLinesVisible(true);
 			
 			for (Integer i=0;i<TABLE_COLUMNS;i++){
+				@SuppressWarnings("unused")
 				TableColumn column = new TableColumn(tblRam, SWT.NONE);
 			}
 			
