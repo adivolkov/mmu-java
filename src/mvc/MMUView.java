@@ -22,6 +22,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+
+// TODO: Only one process to select every time, clear table on every opearation
 public class MMUView {
 	
 		private final int TABLE_COLUMNS = 20;
