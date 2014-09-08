@@ -2,19 +2,151 @@ package testers;
 
 import algorithms.FIFOAlgoImpl;
 import algorithms.LRUAlgoImpl;
+import algorithms.MFUAlgoImpl;
 //import algorithms.MFUAlgoImpl;
 
 public class AlgorithmTest {
 
 	public static void main(String[] args) {
-		FIFOAlgoImpl<String> fifoAlgo = new FIFOAlgoImpl<String>(4);
-			
-		fifoAlgo.add("one");
-		fifoAlgo.add("two");
-		fifoAlgo.add("three");
-		fifoAlgo.add("four");
+		FIFOAlgoImpl<String> fifoAlgo = new FIFOAlgoImpl<String>(3);
+		System.out.println("=================FIFO==================");
+		System.out.println("7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1");
+		System.out.println("=================FIFO==================");
+		fifoAlgo.add("7");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("1");
+		fifoAlgo.print();
+		fifoAlgo.add("2");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("3");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("4");
+		fifoAlgo.print();
+		fifoAlgo.add("2");
+		fifoAlgo.print();
+		fifoAlgo.add("3");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("3");
+		fifoAlgo.print();
+		fifoAlgo.add("2");
+		fifoAlgo.print();
+		fifoAlgo.add("1");
+		fifoAlgo.print();
+		fifoAlgo.add("2");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("1");
+		fifoAlgo.print();
+		fifoAlgo.add("7");
+		fifoAlgo.print();
+		fifoAlgo.add("0");
+		fifoAlgo.print();
+		fifoAlgo.add("1");
+		fifoAlgo.print();
 		
-		System.out.println("--FIFO---");
+		
+		LRUAlgoImpl<String> lruAlgo = new LRUAlgoImpl<String>(3);
+		System.out.println("=================LRU===================");
+		System.out.println("7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1");
+		System.out.println("=================LRU===================");
+		lruAlgo.add("7");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("1");
+		lruAlgo.print();
+		lruAlgo.add("2");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("3");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("4");
+		lruAlgo.print();
+		lruAlgo.add("2");
+		lruAlgo.print();
+		lruAlgo.add("3");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("3");
+		lruAlgo.print();
+		lruAlgo.add("2");
+		lruAlgo.print();
+		lruAlgo.add("1");
+		lruAlgo.print();
+		lruAlgo.add("2");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("1");
+		lruAlgo.print();
+		lruAlgo.add("7");
+		lruAlgo.print();
+		lruAlgo.add("0");
+		lruAlgo.print();
+		lruAlgo.add("1");
+		lruAlgo.print();
+		
+		MFUAlgoImpl<String> mfuAlgo = new MFUAlgoImpl<String>(3);
+		System.out.println("=================MFU===================");
+		System.out.println("7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1");
+		System.out.println("=================MFU===================");
+		mfuAlgo.add("7");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("1");
+		mfuAlgo.print();
+		mfuAlgo.add("2");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("3");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("4");
+		mfuAlgo.print();
+		mfuAlgo.add("2");
+		mfuAlgo.print();
+		mfuAlgo.add("3");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("3");
+		mfuAlgo.print();
+		mfuAlgo.add("2");
+		mfuAlgo.print();
+		mfuAlgo.add("1");
+		mfuAlgo.print();
+		mfuAlgo.add("2");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("1");
+		mfuAlgo.print();
+		mfuAlgo.add("7");
+		mfuAlgo.print();
+		mfuAlgo.add("0");
+		mfuAlgo.print();
+		mfuAlgo.add("1");
+		mfuAlgo.print();
+		
+		// Old testing of all algorithms methods - get, add, remove
+		/* 
+		System.out.println("---FIFO---");
 		fifoAlgo.print();
 		System.out.println("---------");
 		fifoAlgo.add("five");
@@ -32,9 +164,7 @@ public class AlgorithmTest {
 		fifoAlgo.add("test1");
 		fifoAlgo.add("test2");
 		fifoAlgo.add("test3");
-		fifoAlgo.print();
-		
-		LRUAlgoImpl<String> lruAlgo = new LRUAlgoImpl<String>(4);
+		fifoAlgo.print();		
 		
 		lruAlgo.add("one");
 		lruAlgo.add("two");
@@ -53,6 +183,6 @@ public class AlgorithmTest {
 		System.out.println("---------");
 		lruAlgo.remove("three");
 		lruAlgo.print();
-		System.out.println("---------");
+		System.out.println("---------");*/
 	}
 }

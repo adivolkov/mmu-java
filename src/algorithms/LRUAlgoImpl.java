@@ -50,13 +50,32 @@ public class LRUAlgoImpl<T> implements IAlgo<T> {
 			lruList.remove(t);
 	}
 
-	 public void print()
+	public void print()
 	 {
-		 Object[] array = new Object[capacity];
-		 array=lruList.toArray();
-		 for(int i=0;i<array.length;i++)
-		 {
-			 System.out.println(array[i]);
-		 }
+		Object[] array = new Object[lruList.size()] ;
+		array = lruList.toArray();
+		for(int i=0;i<array.length;i++)
+		{
+			System.out.print(array[i]);
+			if (i+1 == capacity)
+			{
+				System.out.println();
+			}
+			else
+			{
+				System.out.print("|");
+			}
+		}
+		for(int i=array.length;i<capacity;i++)
+		{			
+			if (i+1 == capacity)
+			{
+				System.out.println();
+			}
+			else
+			{
+				System.out.print(" |");
+			}
+		}		
 	 }
 }

@@ -28,6 +28,10 @@ public class FIFOAlgoImpl<T> implements IAlgo<T> {
 	@Override
 	public T add(T t) {
 		T removed = null;
+		if	(queue.contains(t))
+		{
+			return null;
+		}
 		if (queue.size() >= capacity)
 		{
 			removed = queue.remove();
@@ -48,8 +52,27 @@ public class FIFOAlgoImpl<T> implements IAlgo<T> {
 		array = queue.toArray();
 		for(int i=0;i<array.length;i++)
 		{
-			System.out.println(array[i]);
+			System.out.print(array[i]);
+			if (i+1 == capacity)
+			{
+				System.out.println();
+			}
+			else
+			{
+				System.out.print("|");
+			}
 		}
+		for(int i=array.length;i<capacity;i++)
+		{			
+			if (i+1 == capacity)
+			{
+				System.out.println();
+			}
+			else
+			{
+				System.out.print(" |");
+			}
+		}		
 	 }
 	
 	
