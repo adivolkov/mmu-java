@@ -39,11 +39,11 @@ public class HardDisk {
 		}
 	}
 
-	public Page<byte[]> pageFault(int pageId) {
+	public synchronized Page<byte[]> pageFault(int pageId) {
 		return hdmap.remove(pageId);	
 	}
 
-	public Page<byte[]> pageReplacement(Page<byte[]> moveToHdPage,
+	public synchronized Page<byte[]> pageReplacement(Page<byte[]> moveToHdPage,
 			Integer moveToRamId) {
 		hdmap.put(moveToHdPage.getPageId(), moveToHdPage);
 		return hdmap.remove(moveToRamId);

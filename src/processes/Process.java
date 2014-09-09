@@ -40,9 +40,9 @@ public class Process implements Runnable {
 				//System.out.println("page " + pages[j].getPageId() + ": " + Arrays.toString(pages[j].getContent()));
 			}
 			
-			// waiting * 1000 for more visualization
+			// sleep between cycles
 			try {
-				Thread.sleep(cycle.getSleepMs() * 1000);
+				Thread.sleep(cycle.getSleepMs());
 			} catch (InterruptedException e) {
 				MMULogger.getInstance().write("sleep interruption, shouldn't happen...", Level.SEVERE);
 				//System.out.println("sleep interruption, shouldn't happen...");

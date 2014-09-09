@@ -27,7 +27,7 @@ public class MMUDriver {
 		
 		MMULogger logger = MMULogger.getInstance();
 		
-		MemoryManagementUnit mmu = new MemoryManagementUnit(5, new LRUAlgoImpl<Integer>(5));
+		MemoryManagementUnit mmu = new MemoryManagementUnit(RAM_CAPACITY, new LRUAlgoImpl<Integer>(RAM_CAPACITY));
 		logger.write("RC " + RAM_CAPACITY , Level.INFO);
 		RunConfiguration runConfig = readConfigurationFile();
 		List<ProcessCycles> processesCycles = runConfig.getProcessesCycles();

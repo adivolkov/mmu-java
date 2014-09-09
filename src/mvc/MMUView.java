@@ -1,6 +1,5 @@
 package mvc;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +21,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-
-// TODO: Only one process to select every time, clear table on every opearation
 public class MMUView {
 	
-		private final int TABLE_COLUMNS = 20;
+		private final int DATA_LENGTH = 5;
 
 		private Display display;
 		private Shell shlMmuChampion;
@@ -37,18 +34,31 @@ public class MMUView {
 		private Label lblPfCount;
 		private Composite cmpPageCounts;
 		private Text txtPrCount;
+		private Text txtCommandNumber;
 		org.eclipse.swt.widgets.List list;
+		private Button btnPlay;
+		private Button btnPlayAll;
+		private Button btnReset;
 		
 		private int processNumber;
+		private int ramCapacity;
+		private int commandNumber;
+		private int pfCount;
+		private int prCount;
 		
+		private Map<Integer,Integer> pageReplacements;
+		private Map<Integer, Integer> pageColumnMap;
+		private boolean[] ramVacancy;
 		
+
 		public MMUView(List<String> commands) {
 			this.commands = commands;
 			processNumber = getProcessNumber();
-			
+			ramCapacity = getRamCapacity();
+
 			display = new Display();
 			shlMmuChampion = new Shell(display);
-			shlMmuChampion.setText("MMU Champion");
+			shlMmuChampion.setText("MMU Champion - Ram Capacity: " + ramCapacity + " Commands " + (commands.size()-2));
 			shlMmuChampion.setLayout(new GridLayout(2, false));
 			shlMmuChampion.setSize(720, 380);
 			
@@ -56,6 +66,8 @@ public class MMUView {
 			createPageCounters();
 			createButtons();
 			createProcessList();
+			
+			init();
 		}
 		
 		public void open() {
@@ -77,20 +89,14 @@ public class MMUView {
 			tblRam.setHeaderVisible(true);
 			tblRam.setLinesVisible(true);
 			
-			for (Integer i=0;i<TABLE_COLUMNS;i++){
+			for (Integer i=0;i<ramCapacity;i++){
 				@SuppressWarnings("unused")
 				TableColumn column = new TableColumn(tblRam, SWT.NONE);
 			}
 			
-			for (Integer i=0;i<5;i++){
+			for (Integer i=0;i<DATA_LENGTH;i++){
+				@SuppressWarnings("unused")
 				TableItem tableItem = new TableItem(tblRam, SWT.NONE);
-				for (Integer j=0;j<TABLE_COLUMNS;j++){
-					tableItem.setText(j, "0");
-				}
-			}
-			
-			for (Integer i=0;i<TABLE_COLUMNS;i++){
-				tblRam.getColumn(i).pack();
 			}
 			
 			//tblRam.pack();
@@ -111,7 +117,7 @@ public class MMUView {
 			txtPfCount.setLayoutData(txtPfGridData);
 			txtPfCount.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			txtPfCount.setEditable(false);
-			txtPfCount.setText("0");
+			
 			
 			
 			Label lblPrCount = new Label(cmpPageCounts, SWT.NONE);
@@ -122,7 +128,16 @@ public class MMUView {
 			txtPrCount.setLayoutData(txtPrGridData);
 			txtPrCount.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			txtPrCount.setEditable(false);
-			txtPrCount.setText("0");
+			
+			Label lblCommandNumber = new Label(cmpPageCounts, SWT.NONE);
+			lblCommandNumber.setText("Last command:");
+			
+			txtCommandNumber = new Text(cmpPageCounts, SWT.BORDER);
+			GridData txtCmGridData = new GridData(15, -1);
+			txtCommandNumber.setLayoutData(txtCmGridData);
+			txtCommandNumber.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+			txtCommandNumber.setEditable(false);
+
 			
 		}
 		
@@ -134,8 +149,9 @@ public class MMUView {
 			cmpButtons.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true, 1, 1));
 			//cmpButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			
-			Button btnPlay = new Button(cmpButtons, SWT.NONE);
+			btnPlay = new Button(cmpButtons, SWT.NONE);
 			btnPlay.setText("Play");
+			
 			// adding an async opeation to avoid UI freeze
 			btnPlay.addSelectionListener(new SelectionListener() {
 				@Override
@@ -144,16 +160,12 @@ public class MMUView {
 				}
 				@Override
 				public void widgetSelected(SelectionEvent e) {
+					//play();
 					Thread operationThread = new Thread() { 
 						public void run() { 
 							display.asyncExec(new Runnable() {
 								public void run() { 
-									int[] selected = list.getSelectionIndices();
-									for(int i=0;i<selected.length;i++){
-										playProcess(selected[i]+1);
-										System.out.println("Play " + (selected[i]+1));
-									}
-									
+									play();
 								}
 							});
 						}
@@ -165,7 +177,8 @@ public class MMUView {
 				
 			});
 			
-			Button btnPlayAll = new Button(cmpButtons, SWT.NONE);
+			btnPlayAll = new Button(cmpButtons, SWT.NONE);
+			btnPlayAll.setText("Play All");
 			
 			// adding an async opeation to avoid UI freeze
 			btnPlayAll.addSelectionListener(new SelectionListener() {
@@ -180,7 +193,7 @@ public class MMUView {
 							display.asyncExec(new Runnable() {
 								public void run() { 
 									System.out.println("Play All");
-									playAllProcesses(); 
+									playAll(); 
 								}
 							});
 						}
@@ -189,7 +202,32 @@ public class MMUView {
 				}
 			});
 			
-			btnPlayAll.setText("Play All");
+						
+			btnReset = new Button(cmpButtons, SWT.NONE);
+			btnReset.setText("Reset");
+			
+			btnReset.addSelectionListener(new SelectionListener() {
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					widgetSelected(e);
+				}
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Thread operationThread = new Thread() { 
+						public void run() { 
+							display.asyncExec(new Runnable() {
+								public void run() { 
+									System.out.println("Reset");
+									init();
+								}
+							});
+						}
+					};
+					operationThread.start();
+				}
+			});
+			
+
 		}
 		
 		private void createProcessList(){
@@ -211,79 +249,136 @@ public class MMUView {
 			list.setItems(listItems);
 		}
 		
-		private void playAllProcesses(){
-			for (int i=1;i<=processNumber;i++){
-				playProcess(i);
+		private void init(){
+			// begin after the ramCapacity and processCount
+			commandNumber = 2;
+			
+			for (Integer i=0;i<ramCapacity;i++){
+				tblRam.getColumn(i).setText("");
+			}
+			
+			for (Integer i=0;i<5;i++){
+				for (Integer j=0;j<ramCapacity;j++){
+					tblRam.getItem(i).setText(j, "");
+				}
+			}
+			
+			for (Integer i=0;i<ramCapacity;i++){
+				tblRam.getColumn(i).pack();
+			}
+			
+			pfCount = 0;
+			prCount = 0;
+			
+			txtPfCount.setText("" + pfCount);
+			txtPrCount.setText("" + prCount);
+			txtCommandNumber.setText("" + (commandNumber - 2));
+			btnPlay.setEnabled(true);
+			btnPlayAll.setEnabled(true);
+			
+			pageReplacements = new HashMap<Integer, Integer>();
+			pageColumnMap = new HashMap<Integer, Integer>();
+			ramVacancy = new boolean[ramCapacity];
+			for(int i=0;i<ramCapacity;i++){
+				ramVacancy[i] = true;
 			}
 		}
 		
-		private void playProcess(Integer processId){
-			int pageFaultCount = 0;
-			int pageReplacementCount = 0;
-			List<Integer> pageFaults = new ArrayList<Integer>();
-			Map<Integer, Integer> pageReplacements = new HashMap<Integer, Integer>();
+		private void playAll(){
+			while (commandNumber < commands.size()){
+				play();
+			}
+		}
+		
+		private void play(){
 			
-			for (String cmd : commands){
-				Scanner scanner = new Scanner(cmd);
-				scanner.useDelimiter(" ");
-				String cmdName = scanner.next();
-				// increment PageFault counter
-				if (cmdName.equals("PF")){
-					pageFaultCount++;
-					pageFaults.add(scanner.nextInt());
-				}
-				// increment PageReplacement counter
-				else if (cmdName.equals("PR")){
-					pageReplacementCount++;
+			txtCommandNumber.setText("" + (commandNumber-1));
+			
+			String command = commands.get(commandNumber);
+			
+			System.out.println("Command: " + command);
+			Scanner scanner = new Scanner(command);
+			scanner.useDelimiter(" ");
+			String cmdName = scanner.next();
+			
+			// incrementing PageFault counter
+			if (cmdName.equals("PF")){
+				pfCount++;
+				txtPfCount.setText("" + pfCount);
+			}
+			
+			// incrementing PageReplacement counter and store MTH and MTR
+			else if (cmdName.equals("PR")){
+				prCount++;
+				txtPrCount.setText("" + prCount);
+				scanner.next();
+				int MTH = scanner.nextInt();
+				scanner.next();
+				int MTR = scanner.nextInt();
+				pageReplacements.put(MTR, MTH);
+			}
+			
+			else if (cmdName.startsWith("P")){
+				int process = Integer.parseInt(cmdName.substring(1, 2));
+				if (isProcessChosen(process - 1)){
+					// getting the process details
 					scanner.next();
-					int MTH = scanner.nextInt();
+					int pageId = scanner.nextInt();
 					scanner.next();
-					int MTR = scanner.nextInt();
-					pageReplacements.put(MTH, MTR);
-				}
-				else if (cmdName.startsWith("P")){
-					// if it is not the correct process we reset the counters
-					if (!cmdName.substring(1, 2).equals(processId.toString())){
-						pageFaultCount = 0;
-						pageReplacementCount = 0;
-						pageFaults.clear();
-						pageReplacements.clear();
-					}
-					// correct process
-					else{
-						// updates the page counters
-						Integer newPfCount = Integer.parseInt(txtPfCount.getText()) + pageFaultCount;
-						txtPfCount.setText(newPfCount.toString());
-						Integer newPrCount = Integer.parseInt(txtPrCount.getText()) + pageReplacementCount;
-						txtPrCount.setText(newPrCount.toString());
+					String arrayString = scanner.nextLine();
+					String[] pageArray = parseArray(arrayString);
+					
+					// removing the MTH page from the ram table if there's an MTR
+					if (pageReplacements.containsKey(pageId)){
+						if (pageColumnMap.containsKey(pageReplacements.get(pageId))){
+							int mthColumn = pageColumnMap.get(pageReplacements.get(pageId));
+							tblRam.getColumn(mthColumn).setText("");
+							for(int i=0;i<ramCapacity;i++){
+								tblRam.getItem(i).setText(mthColumn, "0");
+							}
+							pageColumnMap.remove(pageId);
+							ramVacancy[mthColumn] = true;
+						}
 
-						// updates the columns headers
-						for(Integer pf : pageFaults){
-							tblRam.getColumn(pf).setText(pf.toString());
-						}
-						for(Integer pr : pageReplacements.keySet()){
-							tblRam.getColumn(pr).setText("");
-							Integer mtr = pageReplacements.get(pr);
-							tblRam.getColumn(mtr).setText(mtr.toString());
-						}
+						pageReplacements.remove(pageId);
 						
-						// getting the page updates
-						scanner.next();
-						Integer pageId = scanner.nextInt();
-						scanner.next();
-						String arrayString = scanner.nextLine();
-						String[] pageArray = parseArray(arrayString);
-						
-						// updating the column
-						tblRam.getColumn(pageId).setText(pageId.toString());
-						for(int i=0;i<pageArray.length;i++){
-							tblRam.getItem(i).setText(pageId, pageArray[i]);
-						}
-						tblRam.getColumn(pageId).pack();
 						
 					}
+					
+					// finding an available column
+					int column = -1;
+					if(pageColumnMap.containsKey(pageId)){
+						column = pageColumnMap.get(pageId);
+					}
+					else{
+						for (int i=0;i<ramCapacity;i++){
+							if (ramVacancy[i]){
+								column = i;
+								ramVacancy[i] = false;
+								pageColumnMap.put(pageId, i);
+								break;
+							}
+						}
+					}
+
+					// updating the column
+					tblRam.getColumn(column).setText("" + pageId);
+					for(int i=0;i<pageArray.length;i++){
+						tblRam.getItem(i).setText(column, pageArray[i]);
+					}
+					tblRam.getColumn(column).pack();
+					
+					
 				}
-				scanner.close();
+			}
+			
+			
+			scanner.close();
+			commandNumber++;
+			if (commandNumber == commands.size()){
+				btnPlay.setEnabled(false);
+				btnPlayAll.setEnabled(false);
+				return;
 			}
 		}
 		
@@ -303,8 +398,32 @@ public class MMUView {
 			return processNumber;
 		}
 		
+		private int getRamCapacity(){
+			int ramCapacity = 0;
+			for(String cmd : commands){
+				Scanner scanner = new Scanner(cmd);
+				scanner.useDelimiter(" ");
+				String cmdName = scanner.next();
+				if (cmdName.equals("RC")){
+					ramCapacity = scanner.nextInt();
+					scanner.close();
+					return ramCapacity;
+				}
+				scanner.close();
+			}
+			return ramCapacity;
+		}
+		
 		private String[] parseArray(String arrayString){
 			String cleanString = arrayString.replace("[","").replace("]", "").replace(" ", "");
 			return cleanString.split(",");
+		}
+		
+		private boolean isProcessChosen(int processId){
+			int[] selected = list.getSelectionIndices();
+			for(int i=0;i<selected.length;i++){
+				if (selected[i] == processId) return true;
+			}
+			return false;
 		}
 }
