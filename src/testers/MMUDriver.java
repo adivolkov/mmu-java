@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonReader;
 public class MMUDriver {
 
 	final static Integer RAM_CAPACITY = 4;
-	final static String CONFIG_FILE_NAME = "Configuration.json";
+	final static String CONFIG_FILE_NAME = "Configuration1.json";
 	
 	public static void main(String[] args) throws JsonIOException, JsonSyntaxException, FileNotFoundException {
 		

@@ -160,8 +160,8 @@ public class MMUView {
 				}
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					//play();
-					Thread operationThread = new Thread() { 
+					play();
+					/*Thread operationThread = new Thread() { 
 						public void run() { 
 							display.asyncExec(new Runnable() {
 								public void run() { 
@@ -170,7 +170,7 @@ public class MMUView {
 							});
 						}
 					};
-					operationThread.start();
+					operationThread.start();*/
 					
 					
 				}
@@ -188,7 +188,8 @@ public class MMUView {
 				}
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					Thread operationThread = new Thread() { 
+					playAll();
+					/*Thread operationThread = new Thread() { 
 						public void run() { 
 							display.asyncExec(new Runnable() {
 								public void run() { 
@@ -198,7 +199,7 @@ public class MMUView {
 							});
 						}
 					};
-					operationThread.start();
+					operationThread.start();*/
 				}
 			});
 			
@@ -213,7 +214,8 @@ public class MMUView {
 				}
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					Thread operationThread = new Thread() { 
+					init();
+					/*Thread operationThread = new Thread() { 
 						public void run() { 
 							display.asyncExec(new Runnable() {
 								public void run() { 
@@ -223,7 +225,7 @@ public class MMUView {
 							});
 						}
 					};
-					operationThread.start();
+					operationThread.start();*/
 				}
 			});
 			
@@ -247,6 +249,9 @@ public class MMUView {
 			}
 			
 			list.setItems(listItems);
+			
+			// selecting all of the processes
+			list.setSelection(0,processNumber-1);
 		}
 		
 		private void init(){
@@ -254,12 +259,12 @@ public class MMUView {
 			commandNumber = 2;
 			
 			for (Integer i=0;i<ramCapacity;i++){
-				tblRam.getColumn(i).setText("");
+				tblRam.getColumn(i).setText(" ");
 			}
 			
 			for (Integer i=0;i<5;i++){
 				for (Integer j=0;j<ramCapacity;j++){
-					tblRam.getItem(i).setText(j, "");
+					tblRam.getItem(i).setText(j, " ");
 				}
 			}
 			
@@ -282,6 +287,7 @@ public class MMUView {
 			for(int i=0;i<ramCapacity;i++){
 				ramVacancy[i] = true;
 			}
+			
 		}
 		
 		private void playAll(){
@@ -320,30 +326,33 @@ public class MMUView {
 			
 			else if (cmdName.startsWith("P")){
 				int process = Integer.parseInt(cmdName.substring(1, 2));
-				if (isProcessChosen(process - 1)){
-					// getting the process details
-					scanner.next();
-					int pageId = scanner.nextInt();
-					scanner.next();
-					String arrayString = scanner.nextLine();
-					String[] pageArray = parseArray(arrayString);
-					
-					// removing the MTH page from the ram table if there's an MTR
-					if (pageReplacements.containsKey(pageId)){
-						if (pageColumnMap.containsKey(pageReplacements.get(pageId))){
-							int mthColumn = pageColumnMap.get(pageReplacements.get(pageId));
-							tblRam.getColumn(mthColumn).setText("");
-							for(int i=0;i<ramCapacity;i++){
-								tblRam.getItem(i).setText(mthColumn, "0");
-							}
-							pageColumnMap.remove(pageId);
-							ramVacancy[mthColumn] = true;
+				
+				// getting the process details
+				scanner.next();
+				int pageId = scanner.nextInt();
+				scanner.next();
+				String arrayString = scanner.nextLine();
+				String[] pageArray = parseArray(arrayString);
+				
+				// removing the MTH page from the ram table if there's an MTR
+				if (pageReplacements.containsKey(pageId)){
+					if (pageColumnMap.containsKey(pageReplacements.get(pageId))){
+						int mthColumn = pageColumnMap.get(pageReplacements.get(pageId));
+						tblRam.getColumn(mthColumn).setText(" ");
+						for(int i=0;i<DATA_LENGTH;i++){
+							tblRam.getItem(i).setText(mthColumn, " ");
 						}
-
-						pageReplacements.remove(pageId);
-						
-						
+						pageColumnMap.remove(pageId);
+						ramVacancy[mthColumn] = true;
 					}
+
+					pageReplacements.remove(pageId);
+					
+					
+				}
+				
+				if (isProcessChosen(process - 1)){
+
 					
 					// finding an available column
 					int column = -1;
@@ -362,7 +371,7 @@ public class MMUView {
 					}
 
 					// updating the column
-					tblRam.getColumn(column).setText("" + pageId);
+					tblRam.getColumn(column).setText(" " + pageId);
 					for(int i=0;i<pageArray.length;i++){
 						tblRam.getItem(i).setText(column, pageArray[i]);
 					}
