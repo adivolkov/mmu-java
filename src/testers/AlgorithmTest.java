@@ -7,6 +7,8 @@ import algorithms.MFUAlgoImpl;
 
 public class AlgorithmTest {
 
+	// compare results against: http://www.scribd.com/doc/73808713/Simulation-FIFO-LFU-and-MFU-Page-Replacement-Algorithms-VB-by-Shaify-Mehta
+	
 	public static void main(String[] args) {
 		FIFOAlgoImpl<String> fifoAlgo = new FIFOAlgoImpl<String>(3);
 		System.out.println("=================FIFO==================");
@@ -143,46 +145,6 @@ public class AlgorithmTest {
 		mfuAlgo.print();
 		mfuAlgo.add("1");
 		mfuAlgo.print();
-		
-		// Old testing of all algorithms methods - get, add, remove
-		/* 
-		System.out.println("---FIFO---");
-		fifoAlgo.print();
-		System.out.println("---------");
-		fifoAlgo.add("five");
-		fifoAlgo.print();
-		System.out.println("---------");
-		fifoAlgo.get("test");
-		fifoAlgo.print();
-		System.out.println("---------");
-		fifoAlgo.remove("five");
-		fifoAlgo.print();
-		System.out.println("---------");
-		//fifoAlgo.remove();
-		fifoAlgo.print();
-		System.out.println("---------");
-		fifoAlgo.add("test1");
-		fifoAlgo.add("test2");
-		fifoAlgo.add("test3");
-		fifoAlgo.print();		
-		
-		lruAlgo.add("one");
-		lruAlgo.add("two");
-		lruAlgo.add("three");
-		lruAlgo.add("four");
-		
-		System.out.println("---LRU---");
-		lruAlgo.get("three");
-		lruAlgo.print();
-		System.out.println("---------");
-		lruAlgo.add("five");
-		lruAlgo.print();
-		System.out.println("---------");
-		lruAlgo.get("two");
-		lruAlgo.print();
-		System.out.println("---------");
-		lruAlgo.remove("three");
-		lruAlgo.print();
-		System.out.println("---------");*/
+	
 	}
 }
