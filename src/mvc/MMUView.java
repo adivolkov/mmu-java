@@ -113,7 +113,7 @@ public class MMUView {
 			lblPfCount.setText("Page fault count:");
 			
 			txtPfCount = new Text(cmpPageCounts, SWT.BORDER);
-			GridData txtPfGridData = new GridData(15, -1);
+			GridData txtPfGridData = new GridData(25, -1);
 			txtPfCount.setLayoutData(txtPfGridData);
 			txtPfCount.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			txtPfCount.setEditable(false);
@@ -124,7 +124,7 @@ public class MMUView {
 			lblPrCount.setText("Page replacement count:");
 			
 			txtPrCount = new Text(cmpPageCounts, SWT.BORDER);
-			GridData txtPrGridData = new GridData(15, -1);
+			GridData txtPrGridData = new GridData(25, -1);
 			txtPrCount.setLayoutData(txtPrGridData);
 			txtPrCount.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			txtPrCount.setEditable(false);
@@ -133,7 +133,7 @@ public class MMUView {
 			lblCommandNumber.setText("Last command:");
 			
 			txtCommandNumber = new Text(cmpPageCounts, SWT.BORDER);
-			GridData txtCmGridData = new GridData(15, -1);
+			GridData txtCmGridData = new GridData(25, -1);
 			txtCommandNumber.setLayoutData(txtCmGridData);
 			txtCommandNumber.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 			txtCommandNumber.setEditable(false);
